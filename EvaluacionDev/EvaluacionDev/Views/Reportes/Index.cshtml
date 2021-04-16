@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "reportes";
+}
+<link href="~/css/mvc-grid.css" rel="stylesheet" />
+<script src="https://use.fontawesome.com/c21d09bfbb.js"></script>
+
+
+<div class="text-center">
+    <h1 class="display-4">Clientes</h1>
+</div>
+
+<div class="row col-lg-12 justify-content-end">
+ <a class="nav-link text-dark" asp-action='ExportarExcel' asp-controller='Reportes'> Exportar <span class="fa fa-file-excel-o fa-lg"></span> </a>
+ 
+</div>
+
+<div class="  display-4 col-md-12">
+
+    @model IQueryable<Clientes>
+    @(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+         columns.Add(model => model.IdCliente).Titled("Id Cliente");
+        columns.Add(model => model.FechaRegistroEmpresa).Titled("Fecha de registro");
+        columns.Add(model => model.RazonSocial).Titled("RazonSocial");
+        columns.Add(model => model.RFC.ToString()).Titled("RFC");
+        columns.Add(model => model.Sucursal.ToString()).Titled("Sucursal");
+        columns.Add(model => model.IdEmpleado.ToString()).Titled("Id Empleado");
+        columns.Add(model => $"{model.Nombre} {model.Paterno} {model.Materno}").Titled("Nombre completo");
+        columns.Add(model => model.IdViaje.ToString()).Titled("Id Viaje");
+
+    })
+    .Empty("No se encontraron resultados")
+
+    .Pageable(page=>
+    {
+        page.RowsPerPage = 20;
+        page.ShowPageSizes = true;
+        page.PagesToDisplay = 3;
+    }
+    )
+)
+</div> 

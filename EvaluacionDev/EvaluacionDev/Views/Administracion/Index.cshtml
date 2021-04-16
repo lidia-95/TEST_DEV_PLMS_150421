@@ -1,0 +1,113 @@
+﻿@model IQueryable<PersonaFisica>
+
+@{
+    ViewData["Title"] = "Admin";
+}
+<link href="~/css/mvc-grid.css" rel="stylesheet" />
+<script src="https://use.fontawesome.com/c21d09bfbb.js"></script>
+
+<div class="text-center">
+    <h1 class="display-4">Personas</h1>
+</div>
+
+<div class="row justify-content-center col-md-12">
+
+    <form class="col-md-12" action="/Administracion/Index" method="post">
+        <div class="row col-md-12">
+            <div class="form-group col-md-4">
+                <input name="id" class="form-control" placeholder="Buscar por id" />
+
+            </div>
+
+            <div class="form-group col-md-4">
+                <input name="nombre" class="form-control" placeholder="Buscar por nombre" />
+
+            </div>
+            <div class=" col-md-4">
+                <div class="row justify-content-around">
+
+                    <button class="btn btn-primary" type="submit" data-toggle="tooltip" data-placement="top" title="Buscar"> <i class="fa fa-search fa-2x"></i></button>
+                    <a class="btn btn-secondary" asp-action='Agregar' asp-controller='Administracion'>  <span class="fa fa-user-plus fa-2x"></span> </a>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <br />
+</div>
+
+@*<button class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Agregar" asp-action="Agregar" asp-controller="Administracion"><i class="fa fa-user-plus fa-2x"></i></button>
+<a class="btn btn-secondary"  asp-action='Agregar' asp-controller='Administracion'>  <span class="fa fa-user-plus fa-2x"></span> </a>
+
+<div class="row col-lg-12 justify-content-end">
+    <a class="nav-link text-dark" asp-action='Agregar' asp-controller='Administracion'> Agregar <span class="fa fa-plus-square fa-lg"></span> </a>
+    <br />
+</div>*@
+
+
+<div class="col-md-12">
+
+    @(Html
+        .Grid(Model)
+        .Build(columns =>
+        {
+            if (Model.Count() > 0)
+            {
+
+                 columns.Add(model => $"<a <a class='nav-link text-dark' href='/Administracion/Actualizar/{model.IdPersonaFisica}'> <span class='fa fa-pencil fa-lg'></span> </a>").Encoded(false);
+                  columns.Add(model => $"<a <a class='nav-link text-dark' href='javascript:Confirmar({model.IdPersonaFisica})'> <span class='fa fa-trash fa-lg'></span> </a>").Encoded(false);
+             }
+             columns.Add(model => model.IdPersonaFisica).Titled("Id");
+            columns.Add(model => $"{model.Nombre} {model.ApellidoPaterno} {model.ApellidoMaterno}").Titled("Nombre Completo");
+            columns.Add(model => model.RFC).Titled("RFC");
+            columns.Add(model => model.FechaNacimiento.Value).Formatted("{0:dd/MM/yyyy}").Titled("Fecha Nac");
+
+        })
+        .Empty("No se encontraron resultados")
+
+        .Pageable(page =>
+        {
+            page.RowsPerPage = 10;
+            page.ShowPageSizes = true;
+            page.PagesToDisplay = 3;
+        }
+        )
+    )
+
+
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/js/bootbox.min.js"></script>
+
+<script>
+    function Confirmar(value) {
+        bootbox.confirm({
+            message: "Se eliminara el dato seleccionado, ¿Desea continuar?",
+            buttons: {
+                confirm: {
+                    label: 'Continuar',
+                    className: "btn btn-primary"
+                },
+                cancel: {
+                    label: 'Cancelar',
+                    className: "btn btn-light"
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("Eliminar","Administracion")",
+                        data: { id: value },
+                        success: function () {
+                            window.location.href = '@Url.Action("Index", "Administracion")';
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>

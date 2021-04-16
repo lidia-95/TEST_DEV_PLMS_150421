@@ -1,0 +1,103 @@
+﻿@model PersonaRegistroVM
+
+
+<script src="https://use.fontawesome.com/c21d09bfbb.js"></script>
+<link rel="stylesheet" href="~/lib_bower/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css" />
+
+<div class="text-center">
+    <h1 class="display-4">Ingrese los datos para ingresar un nuevo registro</h1>
+</div>
+<br />
+<br />
+
+
+<div class="row justify-content-center col-md-12">
+    @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+    {
+        <div class="form-group col-md-4">
+            <b> <span class="text-danger">@ViewBag.Mensaje </span></b>
+        </div>
+
+    }
+
+    <form class="col-md-12" asp-action="Agregar" asp-controller="Administracion" method="post">
+        <div class="row col-md-12">
+            <div class="form-group col-md-4">
+                <label>Nombre <b>       <span asp-validation-for="Nombre" class="text-danger"></span></b></label>
+                <input asp-for="Nombre" class="form-control" />
+
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Apellido paterno <b>   <span asp-validation-for="ApellidoPaterno" class="text-danger"></span></b></label>
+                <input asp-for="ApellidoPaterno" class="form-control" />
+
+            </div>
+
+
+            <div class="form-group col-md-4">
+                <label>Apellido materno <b>    <span asp-validation-for="ApellidoMaterno" class="text-danger"></span></b></label>
+                <input asp-for="ApellidoMaterno" class="form-control" />
+
+            </div>
+
+        </div>
+        <div class="row col-md-12">
+
+            <div class="form-group col-md-4">
+                <label>RFC <b>    <span asp-validation-for="RFC" class="text-danger"></span></b></label>
+                <input asp-for="RFC" class="form-control" />
+
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Fecha de nacimiento       <b>   <span asp-validation-for="FechaNacimiento" class="text-danger"></span></b></label>
+                <input type="datetime" asp-for="FechaNacimiento" class="form-control " />
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Usuario que agrega <b>  <span asp-validation-for="UsuarioAgrega" class="text-danger "></span>  </b></label>
+                <input asp-for="UsuarioAgrega" class="form-control" />
+
+            </div>
+
+
+        </div>
+        <div class="row col-md-12 justify-content-center">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Agregar</button>
+            </div>
+        </div>
+
+
+    </form>
+
+
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/lib_bower/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+
+        $('#FechaNacimiento').datepicker({
+            todayBtn: "linked",
+            format: 'dd/mm/yyyy',
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+        });
+
+
+    });
+</script>
+
